@@ -1,7 +1,11 @@
-import express from "express";
-import bodyParser from "body-parser";
-import mongoose from "mongoose";
-import cors from "cors";
+// external imports
+const express = require("express");
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
+const cors = require("cors");
+
+// internal import
+const postRoute = require("./routes/posts");
 
 // initialize app
 const app = express();
@@ -22,3 +26,6 @@ mongoose
     app.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
   )
   .catch((error) => console.log(`Error to connect DB: ${error.message}`));
+
+// routes
+app.use("/posts", postRoute);
