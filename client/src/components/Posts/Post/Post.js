@@ -12,11 +12,14 @@ import {
   MoreHoriz,
 } from "@material-ui/icons";
 import moment from "moment";
+import { useDispatch } from "react-redux";
 
 import useStyles from "./styles";
+import { deletePost } from "../../../actions/posts";
 
 const Post = ({ post, setCurrentId }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   return (
     <Card className={classes.card}>
@@ -37,9 +40,7 @@ const Post = ({ post, setCurrentId }) => {
         <Button
           style={{ color: "white" }}
           size="small"
-          onClick={() => {
-            setCurrentId(post._id);
-          }}
+          onClick={() => setCurrentId(post._id)}
         >
           <MoreHoriz />
         </Button>
@@ -67,7 +68,11 @@ const Post = ({ post, setCurrentId }) => {
           {post.likeCount}
         </Button>
 
-        <Button size="small" color="primary" onClick={() => {}}>
+        <Button
+          size="small"
+          color="primary"
+          onClick={() => dispatch(deletePost(post._id))}
+        >
           <DeleteOutline fontSize="small" />
           Delete
         </Button>
