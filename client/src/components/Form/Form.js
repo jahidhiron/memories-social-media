@@ -35,7 +35,7 @@ const Form = ({ currentId, setCurrentId }) => {
     clear();
   };
 
-  const clear = () => {
+  const clear = (e) => {
     setCurrentId(null);
     setPostData({
       creator: "",
@@ -90,7 +90,7 @@ const Form = ({ currentId, setCurrentId }) => {
         <TextField
           name="tags"
           variant="outlined"
-          label="Tags (coma separated)"
+          label="Tags,separated,no space"
           fullWidth
           value={postData.tags}
           onChange={(e) =>

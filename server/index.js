@@ -1,28 +1,24 @@
-// external imports
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const dotenv = require("dotenv");
 
-// internal import
 const postRoute = require("./routes/posts");
 
 // initialize app
 const app = express();
+dotenv.config();
 
-// third-party configuration
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 
-// routes
 app.use("/posts", postRoute);
 
-const CONNECTION_URL =
-  "mongodb+srv://jahidhiron:hiRon1782@cluster0.v3i0y.mongodb.net/memories?retryWrites=true&w=majority";
+const CONNECTION_URL = process.env.CONNECTION_URL;
 const PORT = process.env.PORT || 8080;
 
-// DB connection
 mongoose
   .connect(CONNECTION_URL)
   .then(() =>
