@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Grow, Container, Grid } from "@material-ui/core";
+import { useLocation } from "react-router-dom";
 
 import Posts from "../Posts/Posts";
 import Form from "../Form/Form";
@@ -11,10 +12,11 @@ const Home = () => {
   const classes = useStyles();
   const [currentId, setCurrentId] = useState(null);
   const dispatch = useDispatch();
+  const location = useLocation();
 
   useEffect(() => {
     dispatch(getPosts());
-  }, [currentId, dispatch]);
+  }, [currentId, dispatch, location]);
 
   return (
     <Grow in>

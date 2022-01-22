@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { AppBar, Typography, Toolbar, Avatar, Button } from "@material-ui/core";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import decode from "jwt-decode";
 
 import memories from "../../images/memories.png";
 import useStyles from "./styles";
@@ -13,19 +14,26 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  useEffect(() => {
-    // const token = user?.token;
-
-    // JWT...
-
-    setUser(JSON.parse(localStorage.getItem("profile")));
-  }, [location]);
-
-  const logout = () => {
+  const logout = useCallback(() => {
     dispatch({ type: "LOGOUT" });
     navigate("/");
     setUser(null);
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, navigate, location]);
+
+  useEffect(() => {
+    const token = user?.token;
+
+    if (token) {
+      const decodedToken = decode(token);
+
+      if (decodedToken.exp * 1000 < new Date().getTime()) {
+        logout();
+      }
+    }
+
+    setUser(JSON.parse(localStorage.getItem("profile")));
+  }, [location, user?.token, logout]);
 
   return (
     <AppBar className={classes.appBar} position="static" color="inherit">
