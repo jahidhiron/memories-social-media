@@ -5,6 +5,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 
 const postRoute = require("./routes/posts");
+const userRoute = require("./routes/users");
 
 // initialize app
 const app = express();
@@ -14,10 +15,11 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 
+// app.use("/", (req, res) => {
+//   res.send("Welcome to our Old Memories App");
+// });
 app.use("/posts", postRoute);
-app.use("/", (req, res) => {
-  res.send("Welcome to our Old Memories App");
-});
+app.use("/users", userRoute);
 
 const CONNECTION_URL = process.env.CONNECTION_URL;
 const PORT = process.env.PORT || 8080;

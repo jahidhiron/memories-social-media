@@ -15,9 +15,19 @@ import { useNavigate } from "react-router-dom";
 import Icon from "./icon";
 import useStyles from "./styles";
 import Input from "./Input";
+import { signin, signup } from "../../actions/auth";
+
+const initialFormData = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
 
 const SignUp = () => {
   const [isSignup, setIsSignup] = useState(false);
+  const [formData, setFormData] = useState(initialFormData);
   const classes = useStyles();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -32,9 +42,17 @@ const SignUp = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (isSignup) {
+      dispatch(signup(formData, navigate));
+    } else {
+      dispatch(signin(formData, navigate));
+    }
   };
 
-  const handleChange = (e) => {};
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const googleSuccess = (res) => {
     const result = res?.profileObj;
