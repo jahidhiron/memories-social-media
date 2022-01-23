@@ -3,6 +3,7 @@ const router = express.Router();
 
 const {
   getPosts,
+  getPostsBySearch,
   createPost,
   updatePost,
   deletePost,
@@ -10,6 +11,7 @@ const {
 } = require("../controllers/posts");
 const auth = require("../middlewares/auth");
 
+router.get("/search", getPostsBySearch);
 router.get("/", getPosts);
 router.post("/", auth, createPost);
 router.patch("/:id", auth, updatePost);
