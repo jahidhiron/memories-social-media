@@ -9,17 +9,18 @@ const userRoute = require("./routes/users");
 
 // initialize app
 const app = express();
-dotenv.config();
 
+// third-party middleware
+dotenv.config();
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 
-// app.use("/", (req, res) => {
-//   res.send("Welcome to our Old Memories App");
-// });
 app.use("/posts", postRoute);
 app.use("/users", userRoute);
+app.use("/", (req, res) => {
+  res.send("Welcome to our Old Memories App");
+});
 
 const CONNECTION_URL = process.env.CONNECTION_URL;
 const PORT = process.env.PORT || 8080;

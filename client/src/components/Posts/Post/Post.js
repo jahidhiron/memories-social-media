@@ -1,3 +1,5 @@
+import moment from "moment";
+import { useDispatch } from "react-redux";
 import {
   Card,
   CardActions,
@@ -12,16 +14,14 @@ import {
   DeleteOutline,
   MoreHoriz,
 } from "@material-ui/icons";
-import moment from "moment";
-import { useDispatch } from "react-redux";
 
-import useStyles from "./styles";
 import { deletePost, likePost } from "../../../actions/posts";
+import useStyles from "./styles";
 
 const Post = ({ post, setCurrentId }) => {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("profile"));
+  const classes = useStyles();
 
   const Likes = () => {
     if (post.likes.length > 0) {

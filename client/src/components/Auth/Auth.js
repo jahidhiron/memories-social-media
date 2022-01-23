@@ -1,4 +1,8 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { GoogleLogin } from "react-google-login";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import {
   Avatar,
   Button,
@@ -7,15 +11,12 @@ import {
   Typography,
   Container,
 } from "@material-ui/core";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import { GoogleLogin } from "react-google-login";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
+import { signin, signup } from "../../actions/auth";
+import { AUTH } from "../../constants/actionTypes";
+import Input from "./Input";
 import Icon from "./icon";
 import useStyles from "./styles";
-import Input from "./Input";
-import { signin, signup } from "../../actions/auth";
 
 const initialFormData = {
   firstName: "",
@@ -24,30 +25,20 @@ const initialFormData = {
   password: "",
   confirmPassword: "",
 };
-
 const SignUp = () => {
-  const [isSignup, setIsSignup] = useState(false);
   const [formData, setFormData] = useState(initialFormData);
-  const classes = useStyles();
+  const [showPassword, setShowPassword] = useState(false);
+  const [isSignup, setIsSignup] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const classes = useStyles();
 
-  const [showPassword, setShowPassword] = useState(false);
   const handleShowPassword = () => setShowPassword(!showPassword);
 
   const switchMode = () => {
+    setFormData(initialFormData);
     setIsSignup((prevIsSignup) => !prevIsSignup);
     setShowPassword(false);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (isSignup) {
-      dispatch(signup(formData, navigate));
-    } else {
-      dispatch(signin(formData, navigate));
-    }
   };
 
   const handleChange = (e) => {
@@ -58,12 +49,27 @@ const SignUp = () => {
     const result = res?.profileObj;
     const token = res?.tokenId;
 
-    dispatch({ type: "AUTH", data: { result, token } });
-    navigate("/");
+    try {
+      dispatch({ type: AUTH, data: { result, token } });
+
+      navigate("/");
+    } catch (error) {
+      console.log(`Error to google client side login: ${error}`);
+    }
   };
 
   const googleFailure = (error) => {
-    console.log(error);
+    alert("Google Sign In was unsuccessful. Try again later");
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (isSignup) {
+      dispatch(signup(formData, navigate));
+    } else {
+      dispatch(signin(formData, navigate));
+    }
   };
 
   return (
@@ -127,7 +133,7 @@ const SignUp = () => {
           </Button>
 
           <GoogleLogin
-            clientId="941476254173-9kl2e7tskroos8cqn3kk183i7mj1ijv3.apps.googleusercontent.com"
+            clientId="941476254173-b10p0mmrngfrkjie8e4h9d8dur7o3a9q.apps.googleusercontent.com"
             render={(renderProps) => (
               <Button
                 className={classes.googleButton}

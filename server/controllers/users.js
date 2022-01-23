@@ -29,15 +29,11 @@ const signin = async (req, res) => {
 };
 
 const signup = async (req, res) => {
-  const { email, password, confirmPassword, firstName, lastName } = req.body;
+  const { email, password, firstName, lastName } = req.body;
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(404).json({ message: "User already exist" });
-    }
-
-    if (password !== confirmPassword) {
-      return res.status(404).json({ message: "Password doesn't match" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
