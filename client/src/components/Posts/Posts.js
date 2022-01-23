@@ -9,7 +9,7 @@ const Posts = ({ setCurrentId }) => {
   const classes = useStyles();
 
   if (!posts?.length && !isLoading) {
-    return "No Post Available";
+    return "There is no post available";
   }
 
   return isLoading ? (

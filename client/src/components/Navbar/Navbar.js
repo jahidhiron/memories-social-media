@@ -4,7 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import decode from "jwt-decode";
 import { AppBar, Typography, Toolbar, Avatar, Button } from "@material-ui/core";
 
-import { logout } from "../../actions/auth";
+import { LOGOUT } from "../../constants/actionTypes";
 import memoriesLogo from "../../images/memoriesLogo.png";
 import memoriesText from "../../images/memoriesText.png";
 import useStyles from "./styles";
@@ -17,7 +17,10 @@ const Navbar = () => {
   const location = useLocation();
 
   const logoutHandler = useCallback(() => {
-    dispatch(logout(navigate));
+    dispatch({ type: LOGOUT });
+
+    navigate("/auth");
+
     setUser(null);
   }, [dispatch, navigate]);
 
@@ -38,7 +41,13 @@ const Navbar = () => {
   return (
     <AppBar className={classes.appBar} position="static" color="inherit">
       <Link to="/" className={classes.brandContainer}>
-        <img src={memoriesText} alt="icon" height="45px" />
+        <img
+          component={Link}
+          to="/"
+          src={memoriesText}
+          alt="icon"
+          height="45px"
+        />
         <img
           className={classes.image}
           src={memoriesLogo}
@@ -69,7 +78,7 @@ const Navbar = () => {
             </Button>
           </div>
         ) : (
-          <Link to="/auth" className={classes.link}>
+          <Link to="/auth" style={{ textDecoration: "none" }}>
             <Button variant="contained" color="primary">
               Sign In
             </Button>

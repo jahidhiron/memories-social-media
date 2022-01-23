@@ -8,7 +8,22 @@ import {
   LIKE_POST,
   START_LOADING,
   END_LOADING,
+  FETCH_POST,
 } from "../constants/actionTypes";
+
+export const getPost = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: START_LOADING });
+
+    const { data } = await api.fetchPost(id);
+
+    dispatch({ type: FETCH_POST, payload: data });
+
+    dispatch({ type: END_LOADING });
+  } catch (error) {
+    console.log(`Error to fetch post : ${error}`);
+  }
+};
 
 export const getPosts = (page) => async (dispatch) => {
   try {
@@ -38,11 +53,13 @@ export const getPostsBySearch = (searchQuery) => async (dispatch) => {
   }
 };
 
-export const createPost = (post) => async (dispatch) => {
+export const createPost = (post, navigate) => async (dispatch) => {
   try {
     dispatch({ type: START_LOADING });
 
     const { data } = await api.createPost(post);
+
+    navigate(`/posts/${data._id}`);
 
     dispatch({ type: CREATE, payload: data });
 
@@ -62,9 +79,11 @@ export const updatePost = (id, post) => async (dispatch) => {
   }
 };
 
-export const deletePost = (id) => async (dispatch) => {
+export const deletePost = (id, navigate) => async (dispatch) => {
   try {
     await api.deletePost(id);
+
+    navigate("/");
 
     dispatch({ type: DELETE, payload: id });
   } catch (error) {
