@@ -5,10 +5,18 @@ import {
   UPDATE,
   LIKE_POST,
   DELETE,
+  START_LOADING,
+  END_LOADING,
 } from "../constants/actionTypes";
 
-const reducer = (state = [], action) => {
+const reducer = (state = { isLoading: true, posts: [] }, action) => {
   switch (action.type) {
+    case START_LOADING:
+      return { ...state, isLoading: true };
+
+    case END_LOADING:
+      return { ...state, isLoading: false };
+
     case FETCH_ALL:
       return {
         ...state,
@@ -21,20 +29,29 @@ const reducer = (state = [], action) => {
       return { ...state, posts: action.payload };
 
     case CREATE:
-      return [...state, { ...action.payload }];
+      return { ...state, posts: [...state.posts, action.payload] };
 
     case UPDATE:
-      return state.map((post) =>
-        post._id === action.payload._id ? action.payload : post
-      );
+      return {
+        ...state,
+        posts: state.posts.map((post) =>
+          post._id === action.payload._id ? action.payload : post
+        ),
+      };
 
     case DELETE:
-      return state.filter((post) => post._id !== action.payload);
+      return {
+        ...state,
+        posts: state.posts.filter((post) => post._id !== action.payload),
+      };
 
     case LIKE_POST:
-      return state.map((post) =>
-        post._id === action.payload._id ? action.payload : post
-      );
+      return {
+        ...state,
+        posts: state.posts.map((post) =>
+          post._id === action.payload._id ? action.payload : post
+        ),
+      };
 
     default:
       return state;

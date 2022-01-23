@@ -6,13 +6,19 @@ import {
   UPDATE,
   DELETE,
   LIKE_POST,
+  START_LOADING,
+  END_LOADING,
 } from "../constants/actionTypes";
 
 export const getPosts = (page) => async (dispatch) => {
   try {
+    dispatch({ type: START_LOADING });
+
     const { data } = await api.fetchPosts(page);
 
     dispatch({ type: FETCH_ALL, payload: data });
+
+    dispatch({ type: END_LOADING });
   } catch (error) {
     console.log(`Error to fetch post : ${error}`);
   }
@@ -20,9 +26,13 @@ export const getPosts = (page) => async (dispatch) => {
 
 export const getPostsBySearch = (searchQuery) => async (dispatch) => {
   try {
+    dispatch({ type: START_LOADING });
+
     const { data } = await api.fetchPostsBySearch(searchQuery);
 
     dispatch({ type: FETCH_BY_SEARCH, payload: data });
+
+    dispatch({ type: END_LOADING });
   } catch (error) {
     console.log(`Error to fetch post by search : ${error}`);
   }
@@ -30,9 +40,13 @@ export const getPostsBySearch = (searchQuery) => async (dispatch) => {
 
 export const createPost = (post) => async (dispatch) => {
   try {
+    dispatch({ type: START_LOADING });
+
     const { data } = await api.createPost(post);
 
     dispatch({ type: CREATE, payload: data });
+
+    dispatch({ type: END_LOADING });
   } catch (error) {
     console.log(`Error to create post : ${error}`);
   }
