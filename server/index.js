@@ -18,9 +18,9 @@ app.use(cors());
 
 app.use("/posts", postRoute);
 app.use("/users", userRoute);
-// app.use("/", (req, res) => {
-//   res.send("Welcome to our Old Memories App");
-// });
+app.use("/", (req, res) => {
+  res.send("API is running");
+});
 
 const CONNECTION_URL = process.env.CONNECTION_URL;
 const PORT = process.env.PORT || 8080;
